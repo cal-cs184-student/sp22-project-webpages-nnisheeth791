@@ -42,6 +42,12 @@
 
 <h3 align="middle">Part 1: Rasterizing single-color triangles</h3>
 
+  <p>Our first step in this project was rasterizing triangles. We did this by using sampling methods that we learned in class. For this particular part,
+  we checked to see if the center of a pixel was located withing the triangle outline and if it was, we would color it in. To check if a pixel was 
+  located inside the triangle outline, we had to calculate the line equations of the triangle. We then used point-in-line tests to determine whether the point
+  in question did in fact fall inside all 3 lines of the triangle. We did this while checking both the clockwise and counterclockwise orientations 
+  of the vertices. Our algorithm is no worse than one that checks each sample within the bounding box of a triangle because...</p>
+
 <p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
 
 <div align="middle">
