@@ -67,7 +67,7 @@
   squares, the <strong>number</strong> of subpixels in a pixel has to be a perfect square. Supersampling is useful because it provides a more accurate result 
   than just sampling once. It provides a higher image resolution and reduces aliasing. As mentioned earlier, we updated the rasterization pipeline to 
   account for sampling rates that are greater than 1 (but also have to be square values) which meant that we needed to calculate the center of each pixel
-  based on the sampling rate rather than just using 1. Supersampling promotes antialiasing because it takes several color samples from a pixel and averages them
+  based on the sampling rate rather than just using 1. Supersampling promotes antialiasing because it takes <strong>several</strong> color samples from a pixel and averages them
   to one color based on the location of pixel in the image. This provides a clearer image than having one color represent a whole image and increasing the risk of
   aliasing.</p>
   
