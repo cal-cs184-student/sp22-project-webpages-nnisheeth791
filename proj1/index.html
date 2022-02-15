@@ -46,7 +46,10 @@
   we checked to see if the center of a pixel was located withing the triangle outline and if it was, we would color it in. To check if a pixel was 
   located inside the triangle outline, we had to calculate the line equations of the triangle. We then used point-in-line tests to determine whether the point
   in question did in fact fall inside all 3 lines of the triangle. We did this while checking both the clockwise and counterclockwise orientations 
-  of the vertices. Our algorithm is no worse than one that checks each sample within the bounding box of a triangle because...</p>
+  of the vertices. Our algorithm is no worse than one that checks each sample within the bounding box of a triangle because in our rasterize_triangle, our two
+  outer for loops iterate through the minimum X value of the triangle and the maximum X value of the triangle for the width. For the height it iterates through
+  the minimum Y value and the maximum Y value of the triangle for the height. This is sampling every point of the bounding rectangle that the triangle resides 
+  in.</p>
 
 <div align="middle">
   <table style="width=100%">
