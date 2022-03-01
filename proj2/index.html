@@ -1,7 +1,145 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 2 here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<style>
+		body {
+			padding: 100px;
+			width: 1000px;
+			margin: auto;
+			text-align: left;
+			font-weight: 300;
+			font-family: 'Open Sans', sans-serif;
+			color: #121212;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4 {
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+	</style>
+	<title>CS 184 Mesh Editor</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2022</h1>
+<h1 align="middle">Project 2: Mesh Editor</h1>
+<h2 align="middle">Naman Nisheeth (SID: 3034144312) and Owen Gong (SID: 3034100450)</h2>
+
+<br><br>
+
+<div>
+
+	<h2 align="middle">Overview</h2>
+	<p>In this project, we learned a lot about implementing geometric modeling. It was very interesting seeing how code translates into
+	smoother graphics and the different algorithms one can use to achieve higher quality images. We built Bezier curves using
+	de Casteljau's algorithm, got a deeper understanding of half-edges and their various applications in manipulating triangle meshes, and
+	implemented loop subdivision which took many of the other tasks we did and applied them to one function. This project was really
+	educational for us because we were able to get more hands on experience with creating 3D images and manipulating their properties.
+	It really felt like a jump from the first project in terms of what we were dealing with (2D -> 3D).</p>
+
+	<h2 align="middle">Section I: Bezier Curves and Surfaces</h2>
+
+	<h3 align="middle">Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
+
+	<p>The de Casteljau algorithm is a recursive algorithm that allows us to compute Bezier curves by computing linear interpolations
+	on n-1 intermediate control points at a parameter t (n being the possible intermediate control points). We implemented it by
+	iterating through all the points that were passed in and then appending all the linearly interpolated points to the end of a vector
+	we made and then returning that vector to find all the control points and ultimately the overall curve.</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/step0.png" align="middle" width="400px" />
+					<figcaption align="middle">Bezier curve evaluated at step 0</figcaption>
+				</td>
+				<td>
+					<img src="images/step1.png" align="middle" width="400px" />
+					<figcaption align="middle">Bezier curve evaluated at step 1</figcaption>
+				</td>
+			</tr>
+			<br>
+			<tr>
+				<td>
+					<img src="images/step2.png" align="middle" width="400px" />
+					<figcaption align="middle">Bezier curve evaluated at step 2</figcaption>
+				</td>
+				<td>
+					<img src="images/step3.png" align="middle" width="400px" />
+					<figcaption align="middle">Bezier curve evaluated at step 3</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/step4.png" align="middle" width="400px" />
+					<figcaption align="middle">Bezier curve evaluated at step 4</figcaption>
+				</td>
+				<td>
+					<img src="images/step5.png" align="middle" width="400px" />
+					<figcaption align="middle">Bezier curve evaluated at step 5</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/bezierCurve.png" align="middle" width="400px" />
+					<figcaption align="middle">Completed Bezier Curve</figcaption>
+				</td>
+				<td>
+					<img src="images/modifiedBC.png" align="middle" width="400px" />
+					<figcaption align="middle">Two points moved and t shifted</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+	<h3 align="middle">Part 2: Bezier surfaces with separable 1D de Casteljau subdivision</h3>
+	<p>The de Casteljau algorithm can be extended to 3D surfaces. There are two inputs to the algorithm: the n x n grid of control points
+	and two parameters, u and v. In the 2D representation of Bezier curves from Part 1, there was only one parameter: u. In order to extend it
+	to Bezier surfaces, we needed to consider the separable 1D de Casteljau algorithm. We split it up so that we evaluate a Bezier curve
+	evaluated by u and then interpolating each of those points with parameter v in order to get the Bezier surface. Our implementation
+	was exactly the same as Part 1 with Bezier curves. Additionally, we implemented the evaluate function evaluated the Bezier patch at (u,v).
+	</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/teapot.png" align="middle" width="400px" />
+					<figcaption align="middle">Teapot which has Bezier surfaces</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+	<h2 align="middle">Section II: Sampling</h2>
+
+	<h3 align="middle">Part 3: Average normals for half-edge meshes</h3>
+
+
+	<h3 align="middle">Part 4: Half-edge flip</h3>
+
+
+	<h3 align="middle">Part 5: Half-edge split</h3>
+
+
+	<h3 align="middle">Part 6: Loop subdivision for mesh upsampling</h3>
+
+
+
+	<h2 align="middle">Section III: Optional Extra Credit</h2>
+	<p>If you are not participating in the optional mesh competition, don't worry about this section!</p>
+
+	<h3 align="middle">Part 7: Design your own mesh!</h3>
+
+</body>
+
 </html>

@@ -43,12 +43,12 @@
 <h3 align="middle">Part 1: Rasterizing single-color triangles</h3>
 
   <p>Our first step in this project was rasterizing triangles. We did this by using sampling methods that we learned in class. For this particular part,
-  we checked to see if the center of a pixel was located withing the triangle outline and if it was, we would color it in. To check if a pixel was 
+  we checked to see if the center of a pixel was located withing the triangle outline and if it was, we would color it in. To check if a pixel was
   located inside the triangle outline, we had to calculate the line equations of the triangle. We then used point-in-line tests to determine whether the point
-  in question did in fact fall inside all 3 lines of the triangle. We did this while checking both the clockwise and counterclockwise orientations 
+  in question did in fact fall inside all 3 lines of the triangle. We did this while checking both the clockwise and counterclockwise orientations
   of the vertices. Our algorithm is no worse than one that checks each sample within the bounding box of a triangle because in our rasterize_triangle, our two
   outer for loops iterate through the minimum X value of the triangle and the maximum X value of the triangle for the width. For the height it iterates through
-  the minimum Y value and the maximum Y value of the triangle for the height. This is sampling every point of the bounding rectangle that the triangle resides 
+  the minimum Y value and the maximum Y value of the triangle for the height. This is sampling every point of the bounding rectangle that the triangle resides
   in.</p>
 
 <div align="middle">
@@ -64,16 +64,16 @@
 
 
 <h3 align="middle">Part 2: Antialiasing triangles</h3>
-  
-  <p>In this task of the project, we implemented supersampling. Since supersampling is dependent on the sampling rate, we had to implement additional 
+
+  <p>In this task of the project, we implemented supersampling. Since supersampling is dependent on the sampling rate, we had to implement additional
   for loops in order to check inside each of the pixels based on how many times we wanted to sample them. Since all the subpixels are also
-  squares, the <strong>number</strong> of subpixels in a pixel has to be a perfect square. Supersampling is useful because it provides a more accurate result 
-  than just sampling once. It provides a higher image resolution and reduces aliasing. As mentioned earlier, we updated the rasterization pipeline to 
+  squares, the <strong>number</strong> of subpixels in a pixel has to be a perfect square. Supersampling is useful because it provides a more accurate result
+  than just sampling once. It provides a higher image resolution and reduces aliasing. As mentioned earlier, we updated the rasterization pipeline to
   account for sampling rates that are greater than 1 (but also have to be square values) which meant that we needed to calculate the center of each pixel
   based on the sampling rate rather than just using 1. Supersampling promotes antialiasing because it takes <strong>several</strong> color samples from a pixel and averages them
   to one color based on the location of pixel in the image. This provides a clearer image than having one color represent a whole image and increasing the risk of
   aliasing.</p>
-  
+
   <div align="middle">
   <table style="width=100%">
     <tr>
