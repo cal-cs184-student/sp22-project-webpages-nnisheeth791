@@ -1,7 +1,152 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 3-1 here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<style>
+		body {
+			padding: 100px;
+			width: 1000px;
+			margin: auto;
+			text-align: left;
+			font-weight: 300;
+			font-family: 'Open Sans', sans-serif;
+			color: #121212;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4 {
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+	</style>
+	<title>CS 184 Mesh Editor</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2022</h1>
+<h1 align="middle">Project 3-1: PathTracer</h1>
+<h2 align="middle">Naman Nisheeth (SID: 3034144312) and Owen Gong (SID: 3034100450)</h2>
+
+<br><br>
+
+<div>
+
+	<h2 align="middle">Overview</h2>
+	<p>In this project, we implemented to main foundations of path tracing. We created the core rountines of a physically-based
+	rendering system that used a pathtracing algorithm. There were many concepts that we learned in class which we applied in this
+	assignment, such as ray-scene intersection, acceleration structures, and physically based lighting and materials. This was a technically
+	challenging project simply due to the time it took to render some objects.</p>
+
+	<h3 align="middle">Part 1: Ray Generation and Scene Intersection</h3>
+
+	<p>The first thing we had to do in the project was generate camera rays. We would take normalized image coordinates ass inputs
+	and output them as Rays in the world space. We did this by transforming the image coordinates to camera space, generating the
+	rays to camera space, and finally transforming them to a Ray object in the world space. We used the Moller Trumbore Algorithm to
+	implement our intersection and repeated them to be able to reset the intersect structure. With this, we could express our triangle
+	in barycentric coordinates. If the t-value is between min_t and max_t, then we can conclude that an intersection has occurred. We then
+	store this value in the intersect structure.</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/banana.JPEG" align="middle" width="400px" />
+					<figcaption align="middle">BANANAS</figcaption>
+				</td>
+				<td>
+					<img src="images/CBempty.JPEG" align="middle" width="400px" />
+					<figcaption align="middle">EMPTY BOX</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/CBspheres.JPEG" align="middle" width="400px" />
+					<figcaption align="middle">SPHERES</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+
+	<h3 align="middle">Part 2: Bounding Volume Hierarchy</h3>
+	<p>The BVH construct algorithm that we made focused on using the average centroid value as the splitting factor. We believed it was
+	an effective heuristic and it produced good results for our images and rendered well. We used the partition function to determine
+	when to start and stop between the left and right splits. We also used the distance function to determine if there were any areas
+	that had no primitives and would thus cause infinite recursion. If centroids were greater than the heuristic, I would put them in
+	the right tree, otherwise I would put them in the left tree.</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/cow.JPEG" align="middle" width="400px" />
+					<figcaption align="middle">Rendering Time: 0.0472s</figcaption>
+				</td>
+				<td>
+					<img src="images/maxplanck.JPEG" align="middle" width="400px" />
+					<figcaption align="middle">Rendering Time: 0.1753s</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/CBlucy.JPEG" align="middle" width="400px" />
+					<figcaption align="middle">Rendering Time: 0.0834s</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<p>BVH was crucial for a palatable rendering speed. Without BVH, images like CBlucy and maxplanck wouldn't run and cow would take a very long
+	time compared to now. BVH helped with splitting up nodes into a tree, sorting them into left and right. It also did a good job with discarding
+		bounding boxes that were empty, which helped the performance. Based on the time differences
+	when it came to rendering, we can say that we successfully sped up the rendering from O(n) to O(log(n)) time. There were many factors
+	that contribute to the overall rendering time, including how we implemented many of the functions in part 1 such as raytrace_pixel. I think
+	that modifying that function for part 2 and 3 really assisted with our speedup as well.</p>
+
+
+	<h3 align="middle">Part 3: Direct Illumination</h3>
+
+
+	<h3 align="middle">Part 4: Global Illumination</h3>
+
+	<p></p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/beforeFlip.png" align="middle" width="400px" />
+					<figcaption align="middle">Before flipEdge operation</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/afterFlip.png" align="middle" width="400px" />
+					<figcaption align="middle">After flipEdge operation</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+	<h3 align="middle">Part 5: Half-edge split</h3>
+
+
+	<h3 align="middle">Part 6: Loop subdivision for mesh upsampling</h3>
+
+
+
+	<h2 align="middle">Section III: Optional Extra Credit</h2>
+	<p>If you are not participating in the optional mesh competition, don't worry about this section!</p>
+
+	<h3 align="middle">Part 7: Design your own mesh!</h3>
+
+</body>
+
 </html>
