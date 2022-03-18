@@ -31,6 +31,7 @@
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2022</h1>
 <h1 align="middle">Project 3-1: PathTracer</h1>
 <h2 align="middle">Naman Nisheeth (SID: 3034144312) and Owen Gong (SID: 3034100450)</h2>
+<h3 align="middle"> <a href="https://cal-cs184-student.github.io/sp22-project-webpages-nnisheeth791/proj3-1/index.html">Link to Hosted Website:</a> https://cal-cs184-student.github.io/sp22-project-webpages-nnisheeth791/proj3-1/index.html</h3>
 
 <br><br>
 
@@ -173,20 +174,123 @@
 
 	<h3 align="middle">Part 4: Global Illumination</h3>
 
-	<p></p>
+	<p>Next, we implemented global illumination, which expands upon direct lighting by accounting for the possibility of light bouncing on multiple
+		surfaces, rather than just one. To initialize the illumination, we call one_bounce_radiance() from task 3, and then recursively call the function
+		depending on if the max ray depth is less than 1 or the new bounced ray doesn't intersect the scene. We also terminate recursion through a random termination method dubbed "Russian Roulette",
+		in which regardless of ray depth we terminate the function by a random probability coin flip. We chose the probability 0.3 per spec recommendation.
+		Finally, we update the resulting hit point depending on whether or not the ray has reached max ray depth by multiplying w_in z component by bsdf sample f by the resulting radiance, and dividing everything by the pdf.
+		If the ray did not reach maximum depth, we also divide by (1 - termination probability) based on Russian Roulette.
+
+	</p>
+
+	<p>Below are some images rendered with global illumination (both direct and indirect) at 1024 samples per pixel: </p>
+
 
 	<div align="middle">
 		<table style="width=100%">
 			<tr>
 				<td>
-					<img src="images/beforeFlip.png" align="middle" width="400px" />
-					<figcaption align="middle">Before flipEdge operation</figcaption>
+					<img src="images/spheres.png" align="middle" width="300px" />
+					<figcaption align="middle">CBspheres_lambertian.dae</figcaption>
+				</td>
+				<td>
+					<img src="images/dragon.png" align="middle" width="300px" />
+					<figcaption align="middle">dragon.dae</figcaption>
+				</td>
+				<td>
+					<img src="images/blob.png" align="middle" width="300px" />
+					<figcaption align="middle">blob.dae</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	Here's a scene comparing rendered views of CBspheres_lambertian.dae with ONLY Direct illumination and then ONLY indirect illumination at 1024 samples per pixel:
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/directReal.png" align="middle" width="300px" />
+					<figcaption align="middle">Only Direct Lighting</figcaption>
+				</td>
+				<td>
+					<img src="images/indirect.png" align="middle" width="300px" />
+					<figcaption align="middle">Only Indirect Lighting</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	Here is CBbunny.dae rendered views with max_ray_depth set at various values at 1024 samples per pixel:
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/bunny0.png" align="middle" width="200px" />
+					<figcaption align="middle">Depth: 0</figcaption>
+				</td>
+				<td>
+					<img src="images/.png" align="middle" width="200px" />
+					<figcaption align="middle">Depth: 1</figcaption>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img src="images/afterFlip.png" align="middle" width="400px" />
-					<figcaption align="middle">After flipEdge operation</figcaption>
+					<img src="images/.png" align="middle" width="200px" />
+					<figcaption align="middle">Depth: 2</figcaption>
+				</td>
+				<td>
+					<img src="images/.png" align="middle" width="200px" />
+					<figcaption align="middle">Depth: 3</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/.png" align="middle" width="200px" />
+					<figcaption align="middle">Depth: 100</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	Here is CBspheres_lambertian.dae with 4 light rays at various sample-per-pixel rates:
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/sphere1.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 1</figcaption>
+				</td>
+				<td>
+					<img src="images/sphere2.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 2</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/sphere4.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 4</figcaption>
+				</td>
+				<td>
+					<img src="images/sphere8.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 8</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/sphere16.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 16</figcaption>
+				</td>
+				<td>
+					<img src="images/sphere64.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 64</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/sphere1024.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample per Pixel: 1024</figcaption>
 				</td>
 			</tr>
 		</table>
@@ -194,7 +298,32 @@
 
 
 	<h3 align="middle">Part 5: Adaptive Sampling</h3>
+	<p>Finally, we implemented adaptive sampling by modifying logic in raytrace_pixel to account for convergence when ray tracing.
+		Pixels that converge quickly do not need as many samples as those that don't converge, and we can adjust that accordingly in our code
+		by checking if convergence is less than maxTolerence * (the mean of n samples) with equations given in spec (equations depend on mean and variance of the n samples,
+		which in turn depends on the sum of the samples' illuminance and sum of the samples' illuminance squared. Because we don't want to calculate a pixel's convergence for
+		each new sample, we also want to check in batches (such as 32, 64 samples in a batch at a time), to improve time performance. The resulting sample rate image shows us
+		which pixels and areas are sampled the most (converge the slowest), with red indicating more sample and blue indicating less samples.
+	</p>
 
+
+	<p>Below is CBbunny.dae rendered at 2048 samples per pixel (64 samples per batch), at 1 sample per light and 5 max ray depth.
+		Though the sample rate image seems a little off from the reference picture in the docs (reference has more green on the area light on top),
+		the image still clearly shows areas of higher sampling rate (the red ceiling and bottom of bunny) vs. areas of lower sampling rate (the walls and area light).</p>
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/bunnyRate.png" align="middle" width="300px" />
+					<figcaption align="middle">Sample Rate Image</figcaption>
+				</td>
+				<td>
+					<img src="images/bunny.png" align="middle" width="300px" />
+					<figcaption align="middle">Noise-free Rendered Result</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
 
 </body>
 
