@@ -55,17 +55,17 @@
 		<table style="width=100%">
 			<tr>
 				<td>
-					<img src="images/banana.JPEG" align="middle" width="400px" />
+					<img src="images/banana.JPEG" align="middle" width="300px" />
 					<figcaption align="middle">BANANAS</figcaption>
 				</td>
 				<td>
-					<img src="images/CBempty.JPEG" align="middle" width="400px" />
+					<img src="images/CBempty.JPEG" align="middle" width="300px" />
 					<figcaption align="middle">EMPTY BOX</figcaption>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img src="images/CBspheres.JPEG" align="middle" width="400px" />
+					<img src="images/CBspheres.JPEG" align="middle" width="300px" />
 					<figcaption align="middle">SPHERES</figcaption>
 				</td>
 			</tr>
@@ -85,17 +85,17 @@
 		<table style="width=100%">
 			<tr>
 				<td>
-					<img src="images/cow.JPEG" align="middle" width="400px" />
+					<img src="images/cow.JPEG" align="middle" width="300px" />
 					<figcaption align="middle">Rendering Time: 0.0472s</figcaption>
 				</td>
 				<td>
-					<img src="images/maxplanck.JPEG" align="middle" width="400px" />
+					<img src="images/maxplanck.JPEG" align="middle" width="300px" />
 					<figcaption align="middle">Rendering Time: 0.1753s</figcaption>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img src="images/CBlucy.JPEG" align="middle" width="400px" />
+					<img src="images/CBlucy.JPEG" align="middle" width="300px" />
 					<figcaption align="middle">Rendering Time: 0.0834s</figcaption>
 				</td>
 			</tr>
@@ -111,6 +111,64 @@
 
 
 	<h3 align="middle">Part 3: Direct Illumination</h3>
+	<p>In this part, we simulated light transport and rendered images with realistic shading. We implemented two direct illumination methods:
+	uniform hemisphere and importance sampling.</p>
+
+	<p>For uniform hemisphere sampling, we implemented a methods that would estimate the direct lighting on a point by sampling
+	uniformly in a hemisphere. First, we converted the image to world coordinates and then calculated the direction and origin. If there
+	was an intersection, we then computed the amount of light entering with the Monte Carlo estimator which was described in the spec.
+	This was the result of running it on the CBempty image:</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<img src="images/emptyUHS.png" align="middle" width="400px" />
+		</table>
+	</div>
+
+	<p>For importance sampling, we wanted to sample directions between the light sources and hit_p. This is overall produces a more clear
+	image than uniform hemisphere sampling and has much less noise. The approach was very similar to uniform hemisphere sampling We also
+	used the Monte Carlo estimator in this method, but we checked to see if the light was a delta light and if it was, we would sample once
+	since all samples would be the same.</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<img src="images/emptyIS.png" align="middle" width="400px" />
+		</table>
+	</div>
+
+	<p>After rending the CBbunny image multiple times with different amounts of light rays, we came to the conclusion that more light rays
+	made the image more clear and less noisy, similar to the effect of the importance sampling.</p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/bunny1.png" align="middle" width="300px" />
+					<figcaption align="middle">1 light ray</figcaption>
+				</td>
+				<td>
+					<img src="images/bunny4.png" align="middle" width="300px" />
+					<figcaption align="middle">4 light rays</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/bunny16.png" align="middle" width="300px" />
+					<figcaption align="middle">16 light rays</figcaption>
+				</td>
+				<td>
+					<img src="images/bunny64.png" align="middle" width="300px" />
+					<figcaption align="middle">64 light rays</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<p>Overall, importance sampling definitely provides a more noise-free image than uniform hemisphere sampling (UHS) does. However,
+	UHS does a better job with displaying shadow, glows, and textures than importance sampling, at the cost of
+	more noise. Since UHS samples only the hemisphere, a lot of spots are missed for light rays and this creates the dark, grainy bits
+	we see a lot in the UHS images. Importance sampling is more time intensive, but it uses more information to provide a clearer image.</p>
+
 
 
 	<h3 align="middle">Part 4: Global Illumination</h3>
@@ -135,17 +193,8 @@
 	</div>
 
 
-	<h3 align="middle">Part 5: Half-edge split</h3>
+	<h3 align="middle">Part 5: Adaptive Sampling</h3>
 
-
-	<h3 align="middle">Part 6: Loop subdivision for mesh upsampling</h3>
-
-
-
-	<h2 align="middle">Section III: Optional Extra Credit</h2>
-	<p>If you are not participating in the optional mesh competition, don't worry about this section!</p>
-
-	<h3 align="middle">Part 7: Design your own mesh!</h3>
 
 </body>
 
