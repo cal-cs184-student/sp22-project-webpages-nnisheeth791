@@ -1,7 +1,165 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 3-2 here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<style>
+		body {
+			padding: 100px;
+			width: 1000px;
+			margin: auto;
+			text-align: left;
+			font-weight: 300;
+			font-family: 'Open Sans', sans-serif;
+			color: #121212;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4 {
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+	</style>
+	<title>CS 184 Mesh Editor</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2022</h1>
+<h1 align="middle">Project 3-2: PathTracer</h1>
+<h2 align="middle">Naman Nisheeth (SID: 3034144312) and Owen Gong (SID: 3034100450)</h2>
+<h3 align="middle"> </h3>
+
+<br><br>
+
+<div>
+
+	<h2 align="middle">Overview</h2>
+	<p>In this project, we added onto what we did in 3-1. We are now implementing features to our images that are more complicated, such
+	as intricate materials and environment lights. We have included mirror, glass, and microfacet materials that use properties of reflection
+	and refraction.</p>
+
+	<h3 align="middle">Part 1: Mirror and Glass Materials</h3>
+
+	<p>In this part, we implemented mirrors and glass to the images we rendered. Mirrors were pretty straightforward since it mostly relied
+	on the reflect function, which composed of taking vector wo, reflecting it across (0,0,1), and storing the result in wi. For sampling,
+	we had to set the pdf = 1 in order to not initiate the sampling. Glass was a little different since we had to implement refraction
+	as well. The refraction function took in a wo vector and returned a wi if total internal reflection did not occur. If it did occur, we
+	returned false and don't include a wi direction. In the final sampling function, we included three cases. The first case was if
+	total internal reflection occurred, then we would just reflect wo to wi. Else, we computed Schlick's reflection coefficient and used
+	the coin flip function in order to determine if we reflect (probability R) or refract (probability 1-R). </p>
+
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/sphere0.png" align="middle" width="400px" />
+					<figcaption align="middle">With a depth of 0, there is no lighting and no bounces in the image</figcaption>
+				</td>
+				<td>
+					<img src="images/sphere1.png" align="middle" width="400px" />
+					<figcaption align="middle">With one bounce, there is just the reflection of the main overhead light
+					and nothing else. The ceiling is also black and doesn't have the right color</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/sphere2.png" align="middle" width="400px" />
+					<figcaption align="middle">The ceiling color is fixed with two bounces. The mirror ball on the left is displaying
+					most of the features that make it correct. The ball on the right still kind of looks like the mirror ball,
+					but most of its features haven't been fully developed yet. The reflection of the ceiling on the left
+					ball is still black even through the ceiling color has changed.</figcaption>
+				</td>
+				<td>
+					<img src="images/sphere3.png" align="middle" width="400px" />
+					<figcaption align="middle">With 3 bounces, the right ball has now fully developed and the left ball's ceiling
+					reflection is now the correct color. The reflection of the right ball on the left ball is not accurate, since it
+					is mostly blacked out even thought the color has been corrected on the right ball. There is also a white reflection
+					on the bottom of the right ball now.</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/sphere4.png" align="middle" width="400px" />
+					<figcaption align="middle">The reflection of the right ball on the left ball has been corrected with 4 bounces.
+					Not a lot of changes have occurred but there is a better reflection on the right ball on the bottom as the light is more
+					detailed, outlining the bottom of the ball as well as the ground. The right ball has also created a faint spot
+					of light on the blue wall.</figcaption>
+				</td>
+				<td>
+					<img src="images/sphere5.png" align="middle" width="400px" />
+					<figcaption align="middle">Again, not a lot of changes with 5 bounces. All that is clearly visible is that the light
+					effects are getting sharper and more detailed.</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/sphere100.png" align="middle" width="400px" />
+					<figcaption align="middle">With 100 bounces, everything has basically leveled out. Very detailed depictions of light
+					and the effects of mirror and glass on the balls. The lighting effects seem much more natural than they were initially.
+					The shadow underneath the right ball is much more realistic and less dark than it was on the previous render.</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+
+	<h3 align="middle">Part 2: Microfacet Materials</h3>
+	<p>In this part, we had to implement three main functions and use them all to solve the BRDF evaluation function. We had to calculate the
+	Normal Distribution Function, the Fresnel coefficient, and importance sample the BRDF. We used the Beckmann distribution with the half vector h
+	in order to get the normal distribution. This function also used alpha, which determines the roughness of the surface of our image. The
+	Fresnel term is calculated for every possible wavelength and then converted into RGB values. We use eta and k based on the material
+	we are dealing with. Finally, we implemented importance sampling for the BRDF. We sampled on pdfs that were similar to the Beckmann
+	distribution to get less noise. We inversed the pdfs in order to get the angles for theta and phi. Then we sampled h and reflected wo across
+	h in order to get a value for wi, which we then computed the final pdf value with.</p>
+	<div align="middle">
+		<table style="width=100%">
+			<tr>
+				<td>
+					<img src="images/dragon0.png" align="middle" width="400px" />
+					<figcaption align="middle">alpha=0.005, There is a lot of noise, extremely glossy and shiny</figcaption>
+				</td>
+				<td>
+					<img src="images/dragon1.png" align="middle" width="400px" />
+					<figcaption align="middle">alpha=0.05, There is still noise but less than the previous render. More rough than the previous
+					render as well</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/dragon2.png" align="middle" width="400px" />
+					<figcaption align="middle">alpha=0.25, All the noise is gone now. Getting a more rough, metallic look.</figcaption>
+				</td>
+				<td>
+					<img src="images/dragon3.png" align="middle" width="400px" />
+					<figcaption align="middle">alpha=0.5, Very rough now, almost no gloss. Can discern that it is a special material.</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/bunnyCos.png" align="middle" width="400px" />
+					<figcaption align="middle">Uniform Cosine Sampling: The bunny is very noisy and there is no indication of what
+					the material is.</figcaption>
+				</td>
+				<td>
+					<img src="images/bunnyIS.png" align="middle" width="400px" />
+					<figcaption align="middle">Importance Sampling: Still very noisy but there is a better idea that the bunny is copper.</figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/dragonCo.png" align="middle" width="400px" />
+					<figcaption align="middle">Cobalt Dragon: alpha: 0.5</figcaption>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<p></p>
+
+
 </html>
